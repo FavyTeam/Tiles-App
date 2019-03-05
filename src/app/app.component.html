@@ -1,11 +1,30 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<div style="text-align:center;">
   <h1>
     Welcome to {{ title }}!
   </h1>
 </div>
-<h2>Here are some graph to help you check email counts: </h2>
 
-<div id="chartContainer" style="height: 800px; width: 100%; margin-left:auto;margin-right:auto;"></div>
+<h1 style="text-align:center;"><b>{{showLegend}}</b></h1>
+
+  <ngx-charts-line-chart
+    [view] = "lineChartView"
+    [legend]="showLegend" 
+    [scheme]="lineChartColorScheme" 
+    [results]="lineChartMulti" 
+    [gradient]="lineChartGradient" 
+    [xAxis]="lineChartShowXAxis" 
+    [yAxis]="lineChartShowYAxis" 
+    [legend]="lineChartShowLegend" 
+    [showXAxisLabel]="lineChartShowXAxisLabel" 
+    [showYAxisLabel]="lineChartShowYAxisLabel" 
+    [xAxisLabel]="lineChartXAxisLabel" 
+    [yAxisLabel]="lineChartYAxisLabel" 
+    [autoScale]="lineChartAutoScale" 
+    [curve]="lineChartLineInterpolation" 
+    (select)="onSelect($event)"
+    [xAxisTickFormatting]="dateTickFormatting"
+  > 
+  </ngx-charts-line-chart>
 
 <router-outlet></router-outlet>

@@ -29,22 +29,43 @@ export class ContactService {
     
   }
 
-  createContacts(week : String, count : Number){
-    
-    let city: any;
-    city = Object.assign({}, {
-      weekname: week,
-      count_contact: count
-    });
+  createContacts(week : String, count : any){
 
-    this.firestore.collection<Contact>('crm_users_result').add(city);
+    this.getContacts().subscribe(e => {
+      var result = 0
+      var sameID : any
+
+      e.forEach(item => {
+        // item.count_contact
+        // item.weekname
+        if (week == item.weekname){
+          // data is already exist
+          sameID = item.id
+          result = 1;
+          if (count - item.count_contact > 0){
+            // update record
+            result = 2;
+          }
+        }
+      })
+
+      let city: any;
+      city = Object.assign({}, {
+        weekname: week,
+        count_contact: count
+      })
+
+      if (result == 0){
+        // not exist
+        this.firestore.collection<Contact>('crm_users_result').add(city);
+      }else if (result == 1){
+        // exist but count is not increase
+
+      }else{
+        // exist and count is increase, need to update
+        this.firestore.doc('crm_users_result/' + sameID).update({count_contact: count})
+      }
+    })
   }
-
-  updateContacts(contact : Contact){
-    // delete contact.id;
-    // this.firestore.collection('crm_users_result').update(contact);
-  }
-
-
 
 }
