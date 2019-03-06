@@ -55,14 +55,17 @@ export class AppComponent {
 		// Initialize Chart xAxis and yAxis
 		let FirdayArray = []
 		
-		var friday = moment().startOf('month').day("Friday");
+		var friday = moment().startOf('week').day("Friday");
 
-		if (friday.date() > 7) friday.add(7,'d');
+		// if (friday.date() > 7) friday.add(7,'d');
 		var month = friday.month();
-		while(month === friday.month()){
+		var count = 4
+		while(count > 0){
 				FirdayArray.push(new Date(friday.toString()))
-				friday.add(7,'d');
+				friday.subtract(7,'d');
+				count--
 		}
+
 
 		this.xAxisTicks = [...FirdayArray]
 
@@ -88,7 +91,7 @@ export class AppComponent {
 
 				let max_value = 0
 				let first_count = 0 , prev_count = 0, first_diff = 0;
-				var first_friday = dataSource[0]
+				var first_friday = dataSource[dataSource.length-1]
 
 				e.forEach(item => {
 					let cond1_current = moment(first_friday.name.toString()).format("YYYY-MM-DD")
@@ -105,6 +108,8 @@ export class AppComponent {
 				})
 
 				first_diff = first_count - prev_count
+
+				console.log("diff", first_diff)
 
 				for (let i =0; i < dataSource.length; i++){
 					var source = dataSource[i];
@@ -132,18 +137,23 @@ export class AppComponent {
 
 				this.yAxisTicks = [...yAxis]
 
-				for (let i =1; i < dataSource.length; i++){
-					if (dataSource[i].value > 0){
-						dataSource[i].value-= dataSource[i-1].value
-					}
+				let diff = []
+				
+				for (let i = 1; i < dataSource.length; i++){
+						diff.push(dataSource[i-1].value - dataSource[i].value)
 				}
-				dataSource[0].value = first_diff
+				diff.push(first_diff)
 
+				for (let i = 0; i < dataSource.length; i++){
+						dataSource[i].value = diff[i]
+				}
+				
 				this.lineChartMulti[0].series = dataSource
 				this.lineChartMulti = [...this.lineChartMulti]
 			})
 
 		})
+		
 
     }
 
