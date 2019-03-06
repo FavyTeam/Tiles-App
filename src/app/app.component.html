@@ -10,7 +10,8 @@
 
   <ngx-charts-line-chart
     [view] = "lineChartView"
-    [legend]="showLegend" 
+    [legend]="showLegend"
+    [legendTitle] = "legendTitle"
     [scheme]="lineChartColorScheme" 
     [results]="lineChartMulti" 
     [gradient]="lineChartGradient" 
@@ -26,7 +27,13 @@
     [yAxisTicks] = "yAxisTicks"
     [xAxisTicks] = "xAxisTicks"
     (select)="onSelect($event)"
+    (mousemove)="onActivate($event)"
   > 
+  
+  <ng-template #tooltipTemplate let-model="model">
+    <h2>{{model.value}}</h2>
+  </ng-template>
+ 
   </ngx-charts-line-chart>
 
 <router-outlet></router-outlet>

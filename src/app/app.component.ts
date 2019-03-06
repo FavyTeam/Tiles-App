@@ -40,8 +40,10 @@ export class AppComponent {
 	linetrimYAxisTicks = chartsData.linetrimYAxisTicks;
 	xAxisTicks = []
 	yAxisTicks = []
+	legendTitle = "Summary"
 	showLegend = "New leads";
 	contact_nums = "0"
+	
 
 	constructor(
 		private contactService: ContactService, 
@@ -163,7 +165,18 @@ export class AppComponent {
 	}
 
 	onActivate(event){
-		console.log(event);
+		let minX = 380
+		let maxX = 1370
+		let avgX = (maxX-minX)/4
+		let currentX = event.clientX
+
+		let nIndex = Math.floor((currentX - minX)/avgX)
+
+		if (nIndex <= 3){
+			// console.log(nIndex)
+			this.contact_nums = this.lineChartMulti[0].series[3-nIndex].value
+		}
+			
 	}
 
 	dateTickFormatting(val: any): String {
