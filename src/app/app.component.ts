@@ -15,7 +15,7 @@ import * as chartsData from '../app/ngxchart.config';
 
 export class AppComponent {
 	contacts : Contact;
-	title = 'angular-tiles';
+	title = 'Number of contacts added this week';
 
 	lineChartMulti = [
 		{
@@ -40,7 +40,8 @@ export class AppComponent {
 	linetrimYAxisTicks = chartsData.linetrimYAxisTicks;
 	xAxisTicks = []
 	yAxisTicks = []
-	showLegend = "Overview of Email Growing on tiles app";
+	showLegend = "New leads";
+	contact_nums = ""
 
 	constructor(
 		private contactService: ContactService, 
@@ -56,8 +57,6 @@ export class AppComponent {
 		
 		var friday = moment().startOf('month').day("Friday");
 
-		console.log("start date => ", friday)
-
 		if (friday.date() > 7) friday.add(7,'d');
 		var month = friday.month();
 		while(month === friday.month()){
@@ -65,7 +64,6 @@ export class AppComponent {
 				friday.add(7,'d');
 		}
 
-		console.log("output => ", FirdayArray)
 		this.xAxisTicks = [...FirdayArray]
 
 		
@@ -130,6 +128,11 @@ export class AppComponent {
     }
 
 	onSelect(event) {
+		// console.log(event);
+		this.contact_nums = event.value
+	}
+
+	onActivate(event){
 		console.log(event);
 	}
 

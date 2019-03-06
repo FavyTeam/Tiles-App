@@ -1,11 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center;">
+<div style="margin-left: 430px;">
   <h1>
-    Welcome to {{ title }}!
+    <b>Number of contacts added this week</b>
   </h1>
 </div>
 
-<h1 style="text-align:center;"><b>{{showLegend}}</b></h1>
+<h3 style="margin-left: 430px;margin-bottom:50px;color: gray;">{{showLegend}}</h3>
+<p style="text-align: center;font-size:30px;">{{contact_nums}}</p>
 
   <ngx-charts-line-chart
     [view] = "lineChartView"
@@ -21,10 +22,10 @@
     [yAxisLabel]="lineChartYAxisLabel" 
     [autoScale]="lineChartAutoScale" 
     [curve]="lineChartLineInterpolation" 
-    (select)="onSelect($event)"
     [xAxisTickFormatting]="dateTickFormatting"
     [yAxisTicks] = "yAxisTicks"
     [xAxisTicks] = "xAxisTicks"
+    (select)="onSelect($event)"
   > 
   </ngx-charts-line-chart>
 
