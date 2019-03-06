@@ -41,7 +41,7 @@ export class AppComponent {
 	xAxisTicks = []
 	yAxisTicks = []
 	showLegend = "New leads";
-	contact_nums = ""
+	contact_nums = "0"
 
 	constructor(
 		private contactService: ContactService, 
@@ -66,22 +66,14 @@ export class AppComponent {
 
 		this.xAxisTicks = [...FirdayArray]
 
-		
 		this.userService.getUsers().subscribe( e => {
 			var keys = Object.keys(e.data);
 			totalContact = keys.length-1
 
-			if (moment().weekday() == 5){
-
-				this.contacts = new Contact()
-				this.contacts.weekname = moment().format("YYYY-MM-DD")
-				this.contacts.count_contact = totalContact
-
-				// console.log(totalContact)
-				// console.log(this.contacts.weekname)
-
-				this.contactService.createContacts(this.contacts.weekname, this.contacts.count_contact)
-			}
+			this.contacts = new Contact()
+			this.contacts.weekname = moment().startOf('week').add('days', 5).format("YYYY-MM-DD") // current date => moment().format("YYYY-MM-DD")
+			this.contacts.count_contact = totalContact
+			this.contactService.createContacts(this.contacts.weekname, this.contacts.count_contact)
 
 			this.contactService.getContacts().subscribe( e => {
 					
@@ -95,21 +87,42 @@ export class AppComponent {
 				})
 
 				let max_value = 0
+				let first_count = 0 , prev_count = 0, first_diff = 0;
+				var first_friday = dataSource[0]
 
 				e.forEach(item => {
-					dataSource.forEach(source => {
-						let mdate = source.name
-						// console.log(mdate.toLocaleString())
+					let cond1_current = moment(first_friday.name.toString()).format("YYYY-MM-DD")
+					let cond2_prev = moment(first_friday.name.toString()).add('-1', 'week').day(5).format("YYYY-MM-DD")
+					let cond3_item = item.weekname
+
+					if (moment(cond3_item).valueOf() == moment(cond1_current).valueOf()){
+						first_count = item.count_contact
+					}
+
+					if (moment(cond3_item).valueOf() == moment(cond2_prev).valueOf()){
+						prev_count = item.count_contact
+					}
+				})
+
+				first_diff = first_count - prev_count
+				dataSource[0].value = first_diff
+
+				for (let i =1; i < dataSource.length; i++){
+					var source = dataSource[i];
+				
+					e.forEach(item => {
 						let cond1 = moment(source.name.toString()).format("YYYY-MM-DD")
 						let cond2 = item.weekname
-						
+
 						if (max_value < item.count_contact) max_value = item.count_contact
 
 						if (moment(cond1).valueOf() == moment(cond2).valueOf()){
 							source.value = item.count_contact
 						}
 					})
-				})
+
+					dataSource[i] = source;
+				}
 
 				// Y-Axis Setting
 				let yAxis = []
@@ -118,6 +131,12 @@ export class AppComponent {
 				}
 
 				this.yAxisTicks = [...yAxis]
+
+				for (let i =1; i < dataSource.length; i++){
+					if (dataSource[i].value > 0){
+						dataSource[i].value-= dataSource[i-1].value
+					}
+				}
 
 				this.lineChartMulti[0].series = dataSource
 				this.lineChartMulti = [...this.lineChartMulti]
