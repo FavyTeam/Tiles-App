@@ -19,7 +19,7 @@ export class AppComponent {
 
 	lineChartMulti = [
 		{
-				"name": "Email Count",
+				"name": "New contact added",
 				"series": []
 		}
 	];
@@ -77,7 +77,7 @@ export class AppComponent {
 
 			this.contactService.getContacts().subscribe( e => {
 					
-				let dataSource = []
+				var dataSource = []
 
 				FirdayArray.forEach(item => {
 					dataSource.push({
@@ -105,9 +105,8 @@ export class AppComponent {
 				})
 
 				first_diff = first_count - prev_count
-				dataSource[0].value = first_diff
 
-				for (let i =1; i < dataSource.length; i++){
+				for (let i =0; i < dataSource.length; i++){
 					var source = dataSource[i];
 				
 					e.forEach(item => {
@@ -118,6 +117,7 @@ export class AppComponent {
 
 						if (moment(cond1).valueOf() == moment(cond2).valueOf()){
 							source.value = item.count_contact
+							
 						}
 					})
 
@@ -137,6 +137,7 @@ export class AppComponent {
 						dataSource[i].value-= dataSource[i-1].value
 					}
 				}
+				dataSource[0].value = first_diff
 
 				this.lineChartMulti[0].series = dataSource
 				this.lineChartMulti = [...this.lineChartMulti]
