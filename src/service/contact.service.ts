@@ -42,7 +42,7 @@ export class ContactService {
           // data is already exist
           sameID = item.id
           result = 1;
-          if (count - item.count_contact > 0){
+          if (Math.abs(count - item.count_contact) > 0){
             // update record
             result = 2;
           }

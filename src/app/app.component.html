@@ -15,7 +15,6 @@
     [gradient]="lineChartGradient" 
     [xAxis]="lineChartShowXAxis" 
     [yAxis]="lineChartShowYAxis" 
-    [legend]="lineChartShowLegend" 
     [showXAxisLabel]="lineChartShowXAxisLabel" 
     [showYAxisLabel]="lineChartShowYAxisLabel" 
     [xAxisLabel]="lineChartXAxisLabel" 
@@ -24,6 +23,8 @@
     [curve]="lineChartLineInterpolation" 
     (select)="onSelect($event)"
     [xAxisTickFormatting]="dateTickFormatting"
+    [yAxisTicks] = "yAxisTicks"
+    [xAxisTicks] = "xAxisTicks"
   > 
   </ngx-charts-line-chart>
 

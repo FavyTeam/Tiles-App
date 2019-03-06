@@ -17,6 +17,6 @@ export var lineChartColorScheme = {
 
 // line, area
 export var lineChartAutoScale = true;
-export var lineChartLineInterpolation = shape.curveBasis;
+export var lineChartLineInterpolation = shape.curveLinear;
 export var lineMaxYAxisTickLength = 2;
 export var linetrimYAxisTicks = true;
