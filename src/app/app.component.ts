@@ -39,7 +39,7 @@ export class AppComponent {
 	lineMaxYAxisTickLength = chartsData.lineMaxYAxisTickLength;
 	linetrimYAxisTicks = chartsData.linetrimYAxisTicks;
 	xAxisTicks = []
-
+	yAxisTicks = []
 	showLegend = "Overview of Email Growing on tiles app";
 
 	constructor(
@@ -96,21 +96,30 @@ export class AppComponent {
 					})
 				})
 
+				let max_value = 0
+
 				e.forEach(item => {
 					dataSource.forEach(source => {
 						let mdate = source.name
 						// console.log(mdate.toLocaleString())
 						let cond1 = moment(source.name.toString()).format("YYYY-MM-DD")
 						let cond2 = item.weekname
-						// console.log(" moment value => ", cond1)
-						// console.log(" item value => ", cond2)
-						// console.log(" moment value 1 => ", moment(cond1).valueOf())
-						// console.log(" item value 1 => ", moment(cond2).valueOf())
+						
+						if (max_value < item.count_contact) max_value = item.count_contact
+
 						if (moment(cond1).valueOf() == moment(cond2).valueOf()){
 							source.value = item.count_contact
 						}
 					})
 				})
+
+				// Y-Axis Setting
+				let yAxis = []
+				for (let i = 0; i < max_value/3; i++){
+					yAxis.push(i*3)
+				}
+
+				this.yAxisTicks = [...yAxis]
 
 				this.lineChartMulti[0].series = dataSource
 				this.lineChartMulti = [...this.lineChartMulti]
