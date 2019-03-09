@@ -59,8 +59,8 @@ export class AppComponent {
 		
 		var friday = moment().startOf('week').day("Friday");
 
-		// if (friday.date() > 7) friday.add(7,'d');
-		var month = friday.month();
+		if (moment().day() >= 5) friday.add(7, 'd')
+			
 		var count = 4
 		while(count > 0){
 				FirdayArray.push(new Date(friday.toString()))
@@ -76,7 +76,12 @@ export class AppComponent {
 			totalContact = keys.length-1
 
 			this.contacts = new Contact()
-			this.contacts.weekname = moment().startOf('week').add('days', 5).format("YYYY-MM-DD") // current date => moment().format("YYYY-MM-DD")
+			if (moment().day() >= 5){
+				var nowDate = moment().startOf('week').day("Friday");
+				this.contacts.weekname = nowDate.add(7, 'd').format("YYYY-MM-DD") // current date => moment().format("YYYY-MM-DD")
+			}else{
+				this.contacts.weekname = moment().startOf('week').add('days', 5).format("YYYY-MM-DD") // current date => moment().format("YYYY-MM-DD")
+			}
 			this.contacts.count_contact = totalContact
 			this.contactService.createContacts(this.contacts.weekname, this.contacts.count_contact)
 
